@@ -2,6 +2,7 @@
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: 'en'
+    nb_max_usercard: '%env(NB_MAX_USERCARD)%'
 
 services:
     # default configuration for services in *this* file
@@ -28,8 +29,20 @@ services:
         resource: '../src/Controller'
         tags: ['controller.service_arguments']
 
+    App\Entity\User:
+        public: true
+
     App\Entity\UserCard:
         public: true
 
     App\Event\UserCardEvent:
         public: true
+
+    App\Event\UserEvent:
+        public: true
+
+    App\EventListener\UserCardSubscriber:
+        arguments:
+            $nbMaxUserCard: '%nb_max_usercard%'
+
+

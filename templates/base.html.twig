@@ -6,10 +6,13 @@
         {% block stylesheets %}{% endblock %}
     </head>
     <body>
+        {% block flashbag %}
+            {% include 'flash.html.twig' %}
+        {% endblock flashbag %}
         {% block menu %}
             {% include 'menu.html.twig' %}
-        {% endblock %}
-        {% block body %}{% endblock %}
+        {% endblock menu %}
+        {% block body %}{% endblock body %}
         {% block javascripts %}{% endblock %}
     </body>
 </html>

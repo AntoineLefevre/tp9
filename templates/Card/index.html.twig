@@ -4,18 +4,13 @@
 {% block body %}
 
     <h2>index Card</h2>
-
     <ul>
         {% for card in cards %}
 
             <li>
-                {#
-                {% if is_granted('app_card_show', card) == true %}
-                    {{ card.name }} - <a href="{{ path('card_show', {'id': card.id}) }}">Show</a>
-                {% endif %}
-                #}
-                {{ card.name }} - <a href="{{ path('card_show', {'id': card.id}) }}">Show</a> - <a href="{{ path('usercard_add', {'id': card.id}) }}">Ajouter au deck</a>
-
+                {{ card.name }} -
+                <a href="{{ path('app_card_show', {'id': card.id}) }}">Show</a>
+                <a href="{{ path('app_usercard_new', {'id': card.id}) }}">add in my deck</a>
             </li>
 
         {% endfor %}

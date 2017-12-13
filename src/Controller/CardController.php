@@ -16,8 +16,8 @@ class CardController extends Controller
 {
     /**
      * @Route(
-     *     path="",
-     *     name="card_index"
+     *     path="/",
+     *     name="app_card_index"
      * )
      */
     public function indexdAction()
@@ -32,19 +32,10 @@ class CardController extends Controller
     /**
      * @Route(
      *     path="{id}/show",
-     *     name="card_show"
+     *     name="app_card_show"
      * )
      */
     public function showAction(Card $card, AuthorizationCheckerInterface $authChecker){
-
-        /*
-        if (false === $authChecker->isGranted(AppAccess::CardShow, $card)) {
-            return $this->redirectToRoute('card_index');
-        }
-
-        $this->denyAccessUnlessGranted(AppAccess::CardShow, $card);
-
-        */
 
         return $this->render('Card/show.html.twig', ['card' => $card]);
     }

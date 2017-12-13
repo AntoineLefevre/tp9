@@ -41,6 +41,8 @@ class Card
     public function setId($id)
     {
         $this->id = $id;
+
+        return $this;
     }
 
     /**
@@ -57,6 +59,8 @@ class Card
     public function setName($name)
     {
         $this->name = $name;
+
+        return $this;
    }
 
     /**

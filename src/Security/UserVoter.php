@@ -10,7 +10,7 @@ use Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
-class UserCardVoter extends Voter
+class UserVoter extends Voter
 {
 
     private $decisionManager;
@@ -20,18 +20,18 @@ class UserCardVoter extends Voter
         $this->decisionManager = $decisionManager;
     }
 
-    const VIEW = AppAccess::UserCardShow;
-    const ADD = AppAccess::UserCardAdd;
-    const EDIT = AppAccess::UserCardEdit;
-    const DELETE = AppAccess::UserCardDelete;
+
+
+    const EDIT = AppAccess::UserEdit;
+
 
     protected function supports($attribute, $subject)
     {
-        if(!in_array($attribute, array(self::VIEW, self::EDIT, self::DELETE))){
+        if(!in_array($attribute, array(self::EDIT))){
             return false;
         }
 
-        if(!$subject instanceof UserCard){
+        if(!$subject instanceof User){
             return false;
         }
 
@@ -46,16 +46,13 @@ class UserCardVoter extends Voter
             return false;
         }
 
-        if ($this->decisionManager->decide($token, array('ROLE_ADMIN')) === true && $attribute !== self::ADD) {
+        if ($this->decisionManager->decide($token, array('ROLE_ADMIN')) === true ) {
             return true;
         }
 
         switch($attribute){
-            case self::ADD:
-            case self::VIEW:
             case self::EDIT:
-            case self::DELETE:
-                return $subject->getUser()->getId() === $user->getId();
+                return $subject->getId() === $user->getId();
             default:
                 throw new \LogicException('This code should not be reached!');
         }

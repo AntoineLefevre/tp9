@@ -4,16 +4,17 @@ namespace App\Controller;
 
 
 use App\AppAccess;
-use App\AppEvent;
 use App\Entity\Card;
-use App\Entity\User;
 use App\Entity\UserCard;
+use App\AppEvent;
+use App\Event\UserCardEvent;
+use App\Form\UserCardType;
+
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\HttpFoundation\Request;
-use App\Form\UserCardType;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
-
 
 /**
  * @Route(path="/usercard")
@@ -21,85 +22,79 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 class UserCardController extends Controller
 {
     /**
-     * @Route(
-     *     path="/new/{id}",
-     *     name="usercard_add"
-     * )
+     * @Route(path="/{id}/new", name="app_usercard_new")
+     *
      */
-    public function addAction(Request $request, Card $card)
+    public function newAction(Request $request, Card $card)
     {
-        $usercard = $this->get(\App\Entity\UserCard::class);
-        $form = $this->createForm(UserCardType::class, $usercard, ['card' => $card]);
+        $userCard = $this->get(UserCard::class);
+
+        $form = $this->createForm(UserCardType::class, $userCard, ["card" => $card]);
+
         $form->handleRequest($request);
 
-        if($form->isValid() && $form->isSubmitted()) {
-            $usercardEvent = $this->get(\App\Event\UserCardEvent::class);
+        if($form->isSubmitted() && $form->isValid()){
 
+            $event = $this->get(UserCardEvent::class);
+            $event->setUserCard($userCard);
+            $dispatcher = $this->get("event_dispatcher");
+            $dispatcher->dispatch(AppEvent::USER_CARD_ADD, $event);
 
-            $usercardEvent->setUserCard($usercard);
-            $dispatcher = $this->get('event_dispatcher');
-
-            $dispatcher->dispatch(AppEvent::USERCARD_ADD, $usercardEvent);
-
-            return $this->redirectToRoute('user_index');
+            return $this->redirectToRoute("app_user_index");
         }
-        return $this->render('UserCard/new.html.twig', array('form' => $form->createView()));
+
+        return $this->render("UserCard/new.html.twig", ["form" => $form->createView()]);
 
     }
 
-
     /**
-     * @Route(
-     *     path="/edit/{id}",
-     *     name="usercard_edit"
-     * )
+     * @Route(path="/{id}/edit", name="app_usercard_edit")
+     *
      */
-    public function editAction(Request $request, UserCard $usercard,AuthorizationCheckerInterface $authorizationChecker)
+    public function editAction(Request $request, UserCard $userCard, AuthorizationCheckerInterface $authorizationChecker)
     {
-        if(false === $authorizationChecker->isGranted(AppAccess::UserCardEdit, $usercard)){
-            			return $this->redirectToRoute("user_index");
- 	}
-        $form = $this->createForm(UserCardType::class, $usercard);
+
+        if(false === $authorizationChecker->isGranted(AppAccess::UserCardEdit, $userCard)){
+            $this->addFlash('error', 'access deny !');
+            return $this->redirectToRoute("app_user_index");
+        }
+
+        $form = $this->createForm(UserCardType::class, $userCard);
+
         $form->handleRequest($request);
 
-        if($form->isValid() && $form->isSubmitted()) {
-            $usercardEvent = $this->get(\App\Event\UserCardEvent::class);
+        if($form->isSubmitted() && $form->isValid()){
 
-            $usercardEvent->setUserCard($usercard);
-            $dispatcher = $this->get('event_dispatcher');
+            $event = $this->get(UserCardEvent::class);
+            $event->setUserCard($userCard);
+            $dispatcher = $this->get("event_dispatcher");
+            $dispatcher->dispatch(AppEvent::USER_CARD_EDIT, $event);
 
-            $dispatcher->dispatch(AppEvent::USERCARD_EDIT, $usercardEvent);
-
-            return $this->redirectToRoute('user_index');
+            return $this->redirectToRoute("app_user_index");
         }
-        return $this->render('UserCard/edit.html.twig', array('form' => $form->createView()));
 
+        return $this->render("UserCard/edit.html.twig", ["form" => $form->createView()]);
     }
-
-
 
     /**
-     * @Route(
-     *     path="/remove/{id}",
-     *     name="usercard_remove"
-     * )
+     * @Route(path="/{id}/delete", name="app_usercard_delete")
+     *
      */
-    public function removeAction(UserCard $usercard,AuthorizationCheckerInterface $authorizationChecker)
+    public function deleteAction(UserCard $userCard, AuthorizationCheckerInterface $authorizationChecker)
     {
-        if(false === $authorizationChecker->isGranted(AppAccess::UserCardDelete, $usercard)){
-            			return $this->redirectToRoute("user_index");
- 		}
+        if(false === $authorizationChecker->isGranted(AppAccess::UserCardEdit, $userCard)){
+            $this->addFlash('error', 'access deny !');
+            return $this->redirectToRoute("app_user_index");
+        }
 
-            $usercardEvent = $this->get(\App\Event\UserCardEvent::class);
+        $event = $this->get(UserCardEvent::class);
+        $event->setUserCard($userCard);
+        $dispatcher = $this->get("event_dispatcher");
+        $dispatcher->dispatch(AppEvent::USER_CARD_DELETE, $event);
 
-            $usercardEvent->setUserCard($usercard);
-            $dispatcher = $this->get('event_dispatcher');
-
-            $dispatcher->dispatch(AppEvent::USERCARD_REMOVE, $usercardEvent);
-
-            return $this->redirectToRoute('user_index');
+        return $this->redirectToRoute("app_user_index");
 
     }
-
 
 }
+

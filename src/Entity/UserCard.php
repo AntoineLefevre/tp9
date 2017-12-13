@@ -1,16 +1,12 @@
 <?php
-
 namespace App\Entity;
-
 use Doctrine\ORM\Mapping as ORM;
-
 /**
  * @ORM\Entity
  * @ORM\Table(name="tp_usercard")
  */
-class UserCard{
-
-
+class UserCard
+{
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -20,60 +16,25 @@ class UserCard{
     /**
      * @ORM\Column(type="integer")
      */
-    private $actionPoint;
-
+    private $attack = 2;
     /**
      * @ORM\Column(type="integer")
      */
-    private $attack;
-
+    private $defense = 2;
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", name="action_point")
      */
-    private $defence;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="Card")
-     */
-    private $card;
-
+    private $actionPoint = 2;
     /**
      * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      */
     private $user;
-
     /**
-     * @return mixed
+     * @ORM\ManyToOne(targetEntity="Card")
+     * @ORM\JoinColumn(name="card_id", referencedColumnName="id")
      */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * @param mixed $id
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getActionPoint()
-    {
-        return $this->actionPoint;
-    }
-
-    /**
-     * @param mixed $actionPoint
-     */
-    public function setActionPoint($actionPoint)
-    {
-        $this->actionPoint = $actionPoint;
-    }
-
+    private $card;
     /**
      * @return mixed
      */
@@ -81,47 +42,44 @@ class UserCard{
     {
         return $this->attack;
     }
-
     /**
      * @param mixed $attack
      */
     public function setAttack($attack)
     {
         $this->attack = $attack;
+        return $this;
     }
-
     /**
      * @return mixed
      */
-    public function getDefence()
+    public function getDefense()
     {
-        return $this->defence;
+        return $this->defense;
     }
-
     /**
-     * @param mixed $defence
+     * @param mixed $defense
      */
-    public function setDefence($defence)
+    public function setDefense($defense)
     {
-        $this->defence = $defence;
+        $this->defense = $defense;
+        return $this;
     }
-
     /**
      * @return mixed
      */
-    public function getCard()
+    public function getActionPoint()
     {
-        return $this->card;
+        return $this->actionPoint;
     }
-
     /**
-     * @param mixed $card
+     * @param mixed $actionPoint
      */
-    public function setCard($card)
+    public function setActionPoint($actionPoint)
     {
-        $this->card = $card;
+        $this->actionPoint = $actionPoint;
+        return $this;
     }
-
     /**
      * @return mixed
      */
@@ -129,16 +87,34 @@ class UserCard{
     {
         return $this->user;
     }
-
     /**
      * @param mixed $user
      */
     public function setUser($user)
     {
         $this->user = $user;
+        return $this;
     }
-
-
-
-
+    /**
+     * @return mixed
+     */
+    public function getCard()
+    {
+        return $this->card;
+    }
+    /**
+     * @param mixed $card
+     */
+    public function setCard($card)
+    {
+        $this->card = $card;
+        return $this;
+    }
+    /**
+     * @return mixed
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
 }

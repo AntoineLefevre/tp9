@@ -1,0 +1,11 @@
+{% macro usercard(usercard) %}
+    <div class="usercard">
+        <h2>{{ usercard.card.name }}</h2>
+        <h3>ATK : <small>{{ usercard.attack }}</small> ---- DEF : <small>{{ usercard.defense }}</small></h3>
+        <h4>COST : <small>{{ usercard.actionPoint }}</small></h4>
+        <h5>Action :
+            <a href="{{ path('app_usercard_edit', {'id': usercard.id}) }}">Edit</a> ----
+            <a href="{{ path('app_usercard_delete', {'id': usercard.id}) }}">Delete</a>
+        </h5>
+    </div>
+{% endmacro %}

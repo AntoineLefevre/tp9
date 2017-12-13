@@ -1,10 +1,14 @@
 <ul>
-    <li><a href="{{ path('home_index') }}">Index</a></li>
-    <li><a href="{{ path('user_index') }}">User</a></li>
-    <li><a href="{{ path('admin_index') }}">Admin</a></li>
-    <li><a href="{{ path('card_index') }}">Cards</a></li>
+    <li><a href="{{ path('app_home_index') }}">Index</a></li>
+    {% if is_granted('ROLE_ADMIN') %}
+        <li><a href="{{ path('app_admin_index') }}">Admin</a></li>
+    {% endif %}
     {% if is_granted('ROLE_USER') %}
+        <li><a href="{{ path('app_user_index') }}">User</a></li>
+        <li><a href="{{ path('app_card_index') }}">Cards</a></li>
         <li><a href="{{ path('logout') }}">Déconnexion</a></li>
-        <li>I am {{ app.user.firstname }} {{ app.user.lastname }}</li>
+        <li>I am {{ app.user.email }}</li>
+    {% else %}
+        <li><a href="{{ path('login') }}">Connexion</a></li>
     {% endif %}
 </ul>

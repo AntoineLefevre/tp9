@@ -1,0 +1,15 @@
+{% block flashbag %}
+
+    {% for message in app.flashes('error') %}
+        <div class="callout alert small">
+            <h6 class="text-center">{{ message }}</h6>
+        </div>
+    {% endfor %}
+
+    {% for message in app.flashes('success') %}
+        <div class="callout success small">
+            <h6 class="text-center">{{ message }}</h6>
+        </div>
+    {% endfor %}
+
+{% endblock flashbag %}

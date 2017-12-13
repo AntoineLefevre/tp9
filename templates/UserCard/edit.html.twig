@@ -1,8 +1,6 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h2>Edit d'un usercard</h2>
-    {{ form_start(form) }}
-    {{ form_widget(form) }}
-    {{ form_end(form) }}
-{% endblock %}
+    {{ form(form) }}
+    <a href="{{ path('app_user_index') }}">retour</a>
+{% endblock body %}

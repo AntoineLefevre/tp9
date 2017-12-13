@@ -10,7 +10,7 @@ class HomeController extends Controller
     /**
      * @Route(
      *     path="/",
-     *     name="home_index"
+     *     name="app_home_index"
      * )
      */
     public function indexAction()
