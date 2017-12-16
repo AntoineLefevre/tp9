@@ -1,8 +1,25 @@
 {% extends 'base.html.twig' %}
 
+{%  import "macro.html.twig" as macro %}
 
 {% block body %}
 
     <h2>index user</h2>
+
+    <h3>Liste des cartes</h3>
+    {% for usercard in usercards %}
+        {% if is_granted('ROLE_ADMIN') == true %}
+            <h6>{{ usercard.user.email }}</h6>
+        {% endif %}
+        {{ macro.usercard(usercard) }}
+    {% endfor %}
+
+    {% if is_granted('ROLE_ADMIN') == true %}
+        <h3>Liste des users</h3>
+        {%  for user in users %}
+            {{ user.email }}
+            </br>
+        {%  endfor %}
+    {% endif %}
 
 {% endblock %}

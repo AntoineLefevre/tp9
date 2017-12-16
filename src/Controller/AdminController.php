@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 
+use App\Entity\LogAction;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
@@ -19,6 +20,7 @@ class AdminController extends Controller
      */
     public function indexdAction()
     {
-        return $this->render('Admin/index.html.twig');
+        $logs = $this->getDoctrine()->getManager()->getRepository(LogAction::class)->findAll();
+        return $this->render('Admin/index.html.twig',['logs' => $logs]);
     }
 }

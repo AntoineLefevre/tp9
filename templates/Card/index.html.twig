@@ -14,7 +14,7 @@
                     {{ card.name }} - <a href="{{ path('card_show', {'id': card.id}) }}">Show</a>
                 {% endif %}
                 #}
-                {{ card.name }} - <a href="{{ path('card_show', {'id': card.id}) }}">Show</a>
+                {{ card.name }} - <a href="{{ path('card_show', {'id': card.id}) }}">Show</a> - <a href="{{ path('usercard_new', {'id': card.id }) }}">Ajouter au deck</a>
 
             </li>
 

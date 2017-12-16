@@ -5,4 +5,8 @@
 
     <h2>index admin</h2>
 
+    {% for log in logs %}
+        {{ log.log }}
+        </br>
+    {%  endfor %}
 {% endblock %}
